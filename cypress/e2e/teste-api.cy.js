@@ -15,6 +15,30 @@ describe("Teste da API de Integração", () => {
     });
   });
 
+  it("Listar eventos sem token", () => {
+    cy.request({
+      method: "GET",
+      url: api,
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(401);
+    });
+  });
+
+  it("Listar eventos com filtro", () => {
+    const filtro = "cerimonialista=Ana Silva";
+    cy.request({
+      method: "GET",
+      url: `${api}?${filtro}`,
+      headers: {
+        "x-api-token": token,
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.be.an("array");
+    });
+  });
+
   it("Listar evento específico", () => {
     const id = 1;
     cy.request({
@@ -26,6 +50,20 @@ describe("Teste da API de Integração", () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).to.have.property("id", id);
+    });
+  });
+
+  it("Listar evento específico com id inválido", () => {
+    const id = 1000;
+    cy.request({
+      method: "GET",
+      url: `${api}/${id}`,
+      headers: {
+        "x-api-token": token,
+      },
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(404);
     });
   });
 
