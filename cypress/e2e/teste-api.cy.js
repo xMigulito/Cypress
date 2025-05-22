@@ -38,9 +38,10 @@ describe("Testes da API de Integração - POST", () => {
         "x-api-token": token,
       },
       body: eventoInvalido,
+      failOnStatusCode: false,
     }).then((response) => {
-      expect(response.status).to.eq(201);
-      expect(response.body).to.have.all.keys("id", "local", "dia", "cerimonialista");
+      expect(response.status).to.eq(400);
+      expect(response.body.message).to.be.an("array").that.includes("O local não pode ser vazio");
     });
   });
 
@@ -338,23 +339,23 @@ describe("Testes da API de Integração - PATCH", () => {
   });
 
   it("Atualizar evento com dados inválidos", () => {
-    const id = 1;
-    const eventoInvalido = {
-      dia: "2023-10-02",
-    };
-    cy.request({
-      method: "PATCH",
-      url: `${api}/${id}`,
-      headers: {
-        "x-api-token": token,
-      },
-      body: eventoInvalido,
-      failOnStatusCode: false,
-    }).then((response) => {
-      expect(response.status).to.eq(500);
-      expect(response.body).to.have.property("message");
-    });
+  const id = 1;
+  const eventoInvalido = {
+    dia: "",
+  };
+  cy.request({
+    method: "PATCH",
+    url: `${api}/${id}`,
+    headers: {
+      "x-api-token": token,
+    },
+    body: eventoInvalido,
+    failOnStatusCode: false,
+  }).then((response) => {
+    expect(response.status).to.eq(400);
+    expect(response.body.message).to.be.an("array").that.includes("A data deve ser válida");
   });
+});
 
   it("Atualizar evento sem token", () => {
     const id = 1;
