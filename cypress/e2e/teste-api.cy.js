@@ -105,21 +105,6 @@ describe("Testes da API de Integração - GET", () => {
   const api = "http://localhost:3000/eventos";
   const token = "authkey";
 
-  beforeEach(() => {
-    cy.request({
-      method: "POST",
-      url: api,
-      headers: {
-        "x-api-token": token,
-      },
-      body: {
-        dia: "2023-10-01T19:24:00Z",
-        local: "Local Teste",
-        cerimonialista: "Ana Silva",
-      },
-    });
-  });
-
   it("Listar eventos", () => {
     cy.request({
       method: "GET",
@@ -280,21 +265,6 @@ describe("Testes da API de Integração - PATCH", () => {
   const api = "http://localhost:3000/eventos";
   const token = "authkey";
 
-  beforeEach(() => {
-    cy.request({
-      method: "POST",
-      url: api,
-      headers: {
-        "x-api-token": token,
-      },
-      body: {
-        dia: "2023-10-01T19:24:00Z",
-        local: "Local Teste",
-        cerimonialista: "Ana Silva",
-      },
-    });
-  });
-
   it("Atualizar evento", () => {
     const id = 1;
     const eventoAtualizado = {
@@ -377,21 +347,6 @@ describe("Testes da API de Integração - PATCH", () => {
 describe("Testes da API de Integração - DELETE", () => {
   const api = "http://localhost:3000/eventos";
   const token = "authkey";
-
-  beforeEach(() => {
-    cy.request({
-      method: "POST",
-      url: api,
-      headers: {
-        "x-api-token": token,
-      },
-      body: {
-        dia: "2023-10-01T19:24:00Z",
-        local: "Local Teste",
-        cerimonialista: "Ana Silva",
-      },
-    });
-  });
 
   it("Deletar evento com ID válido", () => {
     const id = 1;
